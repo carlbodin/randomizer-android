@@ -2,83 +2,110 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="@color/screen_background"
+    tools:context=".CategoriesSetupActivity">
 
+    <LinearLayout
+        android:id="@+id/header_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/panel_background"
+        android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Categories"
+            android:textColor="@color/text_primary"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Enter your options, then pick one at random."
+            android:textColor="@color/text_secondary"
+            android:textSize="15sp" />
+
+        <Switch
+            android:id="@+id/withdraw_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Withdraw picked option from the pool"
+            android:textColor="@color/text_primary" />
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/categoriesScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:clipToPadding="true"
-        app:layout_constraintBottom_toTopOf="@+id/start_button"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/panel_background"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/footer_actions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        app:layout_constraintTop_toBottomOf="@+id/header_card">
 
         <LinearLayout
             android:id="@+id/element_list_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.9"
-            android:animateLayoutChanges="false"
             android:orientation="vertical"
-            android:paddingLeft="30sp"
-            android:paddingTop="0sp"
-            android:paddingRight="20sp"
-            android:paddingBottom="0sp"
-            android:scrollbars="vertical" />
+            android:padding="20dp" />
     </ScrollView>
 
-
-    <Button
-        android:id="@+id/add_button"
-        android:layout_width="55sp"
-        android:layout_height="55sp"
-        android:layout_marginStart="70dp"
-        android:text="+"
-        android:textColor="#ffffff"
-        android:textSize="22sp"
-        android:background="@drawable/button_selector"
-        app:layout_constraintBottom_toBottomOf="@+id/start_button"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/start_button"
-        android:layout_width="150sp"
-        android:layout_height="55sp"
-        android:layout_marginEnd="70dp"
-        android:layout_marginBottom="70dp"
-        android:text="Start"
-        android:textColor="#ffffff"
-        android:textSize="22sp"
-        android:background="@drawable/button_selector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/footer_actions"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="70dp"
-        android:text="Assign categories"
-        android:textSize="28sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/add_button"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_selector"
+            android:text="Add"
+            android:textAllCaps="false"
+            android:textColor="@color/button_text"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/start_button"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_selector"
+            android:text="Start"
+            android:textAllCaps="false"
+            android:textColor="@color/button_text"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:background="#FFFFFF"-->
-<!--    tools:context=".CategoriesSetupActivity">-->
-
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

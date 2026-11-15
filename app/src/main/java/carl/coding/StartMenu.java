@@ -1,40 +1,62 @@
 package carl.coding;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class StartMenu extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PreferencesHelper.applyNightMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_menu);
+
+        ImageButton themeToggleButton = findViewById(R.id.themeToggleButton);
+        refreshThemeToggleButton(themeToggleButton);
+        themeToggleButton.setOnClickListener(v -> {
+            boolean enableDarkMode = !PreferencesHelper.isDarkModeEnabled(StartMenu.this);
+            PreferencesHelper.setDarkModeEnabled(StartMenu.this, enableDarkMode);
+            PreferencesHelper.applyNightMode(StartMenu.this);
+            recreate();
+        });
     }
 
-        public void goCoin(View view) {
-        Intent intent = new Intent(this, CoinActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    private void refreshThemeToggleButton(ImageButton themeToggleButton) {
+        boolean darkModeEnabled = PreferencesHelper.isDarkModeEnabled(this);
+        themeToggleButton.setImageResource(darkModeEnabled ? R.drawable.ic_theme_sun : R.drawable.ic_theme_moon);
+        themeToggleButton.setContentDescription(darkModeEnabled ? "Switch to light mode" : "Switch to dark mode");
+    }
+
+    public void goCoin(View view) {
+        startScreen(CoinActivity.class);
     }
 
     public void goDice(View view) {
-        Intent intent = new Intent(this, DiceActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
-
-    public void goYatzy(View view) {
-        Intent intent = new Intent(this, YatzyActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        startScreen(DiceActivity.class);
     }
 
     public void goCategories(View view) {
-        Intent intent = new Intent(this, CategoriesSetupActivity.class);
+        startScreen(CategoriesSetupActivity.class);
+    }
+
+    public void goTeams(View view) {
+        startScreen(TeamSetupActivity.class);
+    }
+
+    public void goNumbers(View view) {
+        startScreen(NumberActivity.class);
+    }
+
+    public void goYatzy(View view) {
+        startScreen(YatzyActivity.class);
+    }
+
+    private void startScreen(Class<?> target) {
+        Intent intent = new Intent(this, target);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
