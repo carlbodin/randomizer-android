@@ -36,9 +36,6 @@
             android:name=".YatzyActivity"
             android:exported="false" />
         <activity
-            android:name=".DiceDynamicActivity"
-            android:exported="false" />
-        <activity
             android:name=".StartMenu"
             android:exported="true">
             <intent-filter>
