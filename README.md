@@ -32,7 +32,7 @@ Download `randomizer-debug.apk` from the latest [release](https://github.com/car
 
 ## Building
 
-Requires JDK 17 or newer and the Android SDK (platform 36).
+Requires JDK 17 or newer and the Android SDK (platform 37.2).
 
 ```sh
 ./gradlew :app:assembleDebug        # app/build/outputs/apk/debug/randomizer-debug.apk

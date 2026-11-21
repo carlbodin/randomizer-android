@@ -7,13 +7,13 @@ Guide for coding agents working in this repository. Read [DESIGN.md](DESIGN.md) 
 - Repository/project name: `randomizer-android`. The user-facing app name is **Randomizer** (`app_name` in `strings.xml`); never show the `-android` suffix to users.
 - Single-module Android app in Java, Views + XML layouts, no Kotlin, no Compose, no DI framework.
 - `applicationId` and package are `carl.coding`. Do not change them: installed copies would stop receiving updates.
-- minSdk 23, targetSdk 33, compileSdk 36. AGP 9.5, Gradle wrapper 9.9.2.
+- minSdk 23, targetSdk 33, compileSdk 37.2. AGP 9.5, Gradle wrapper 9.9.2.
 - targetSdk stays at 33 on purpose: 35+ enforces edge-to-edge drawing, which needs window-inset handling in every layout first.
 
 ## Environment
 
 - JDK 17 or newer to run Gradle (CI uses Temurin 17). Point `JAVA_HOME` or `org.gradle.java.home` in `~/.gradle/gradle.properties` at it.
-- Android SDK with `platforms;android-36` and build-tools. Set `ANDROID_HOME`, or `sdk.dir` in `local.properties` (git-ignored).
+- Android SDK with `platforms;android-37.2` and build-tools. Set `ANDROID_HOME`, or `sdk.dir` in `local.properties` (git-ignored).
 - To verify on an emulator: `emulator` plus a system image, for example `system-images;android-34;google_apis;x86_64` with a `pixel_6` AVD.
 
 ## Commands
