@@ -8,7 +8,6 @@
     <string name="mode_coin">Coin</string>
     <string name="mode_dice">Dice</string>
     <string name="mode_yatzy">Yatzy dice</string>
-    <string name="mode_yes_no">Yes or no</string>
     <string name="mode_categories">Categories</string>
     <string name="mode_teams">Team randomizer</string>
     <string name="mode_number">Number generator</string>
@@ -34,11 +33,6 @@
     <string name="yatzy_sum">Sum: %1$d</string>
     <string name="yatzy_die_description">%1$d</string>
     <string name="yatzy_die_held_description">%1$d, held</string>
-
-    <!-- Yes or no -->
-    <string name="yes_no_decide">Decide</string>
-    <string name="yes">YES</string>
-    <string name="no">NO</string>
 
     <!-- Categories -->
     <string name="categories_intro">Enter your options, then pick one at random.</string>

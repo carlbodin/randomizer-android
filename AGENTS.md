@@ -33,7 +33,7 @@ scripts/capture_readme_screenshots.sh          # regenerate README screenshots (
 1. `assembleDebug`, `testDebugUnitTest` and `lintDebug` pass with no lint errors.
 2. Logic changes come with unit tests. Keep randomness and rules in plain Java classes that take a `java.util.Random` (see `RandomRange`, `Teams`), so they can be tested without Android.
 3. UI changes are checked on an emulator in **both** light and dark mode (the moon/sun button on the start menu), and in landscape when the screen holds state.
-4. If a feature's look changes, rerun `scripts/capture_readme_screenshots.sh`. If features are added or removed, update the README feature table and the script.
+4. If a feature's look changes, rerun `scripts/capture_readme_screenshots.sh`. If features are added or removed, update the README feature list, gallery and the script.
 5. If you change launcher icon colors or shapes, edit `scripts/generate_icon.py` and rerun it. Never hand-edit its generated files (they say so in a header comment).
 
 ## Conventions

@@ -89,7 +89,6 @@ tap "carl.coding:id/die_image" 1
 tap "carl.coding:id/die_image" 3
 shot yatzy 0.5; back
 
-tap "Yes or no"; tap "Decide"; shot yes-no 0.8; back
 
 tap "Categories"
 tap "Category name"

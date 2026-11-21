@@ -11,7 +11,7 @@ One activity per screen, all in package `carl.coding` (`app/src/main/java/carl/c
 | `RandomizerApp` | `Application`; applies the saved light/dark mode at startup. |
 | `BaseActivity` | Base of every screen: main-thread `handler` cleared on destroy, `vibrate(ms)`, `open(Class)`. |
 | `StartMenu` | Launcher screen: one button per feature, plus the theme toggle. |
-| `CoinActivity`, `DiceActivity`, `YatzyActivity`, `YesNoActivity`, `NumberActivity` | Single-screen features. |
+| `CoinActivity`, `DiceActivity`, `YatzyActivity`, `NumberActivity` | Single-screen features. |
 | `CategoriesSetupActivity` → `CategoriesActivity` | Enter options, then pick (optionally withdrawing picks). |
 | `TeamSetupActivity` → `TeamResultActivity` | Enter players and team count, then show shuffled teams. |
 | `EditableList` | Rows of text inputs with Remove buttons, used by both setup screens (`item_editable_row.xml`). |

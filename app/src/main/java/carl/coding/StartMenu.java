@@ -34,10 +34,6 @@ public class StartMenu extends BaseActivity {
         open(YatzyActivity.class);
     }
 
-    public void goYesNo(View view) {
-        open(YesNoActivity.class);
-    }
-
     public void goCategories(View view) {
         open(CategoriesSetupActivity.class);
     }
