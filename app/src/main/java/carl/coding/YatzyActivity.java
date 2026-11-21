@@ -2,24 +2,20 @@ package carl.coding;
 
 import static java.util.Arrays.sort;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
 import java.util.Random;
 
 
-public class YatzyActivity extends AppCompatActivity {
+public class YatzyActivity extends BaseActivity {
 
     // Declare instance variables
     Button yatzyRollButton;
@@ -29,7 +25,6 @@ public class YatzyActivity extends AppCompatActivity {
     Drawable yatzy4Drawable;
     Drawable yatzy5Drawable;
     Drawable yatzy6Drawable;
-    Handler handler;  // Create a handler to update the UI with delays
     ImageView yatzyImageView1;
     ImageView yatzyImageView2;
     ImageView yatzyImageView3;
@@ -39,7 +34,6 @@ public class YatzyActivity extends AppCompatActivity {
     boolean[] holdArray;
     Random randomizer;
     TextView yatzyRollResult;
-    Vibrator vib;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +42,6 @@ public class YatzyActivity extends AppCompatActivity {
 
         // Initiate randomizer
         randomizer = new Random();
-
-        // Initiate vibrator
-        vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-        // Initiate handler
-        handler = new Handler();
 
         // Load dice images
         yatzy1Drawable = ContextCompat.getDrawable(this, R.drawable.dice_1_512);
@@ -91,18 +79,12 @@ public class YatzyActivity extends AppCompatActivity {
         yatzyImageView5.setImageDrawable(yatzy5Drawable);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
     public void yatzyRoll(View view) {
         // Disable button during animation
         yatzyRollButton.setEnabled(false);
 
         // Vibrate to provide feedback to the user
-        vib.vibrate(300);
+        vibrate(300);
 
         int[] resultInt = {1, 2, 3, 4, 5}; // Variable to hold the rolling and previous value
 

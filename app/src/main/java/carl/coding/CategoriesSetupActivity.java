@@ -12,13 +12,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class CategoriesSetupActivity extends AppCompatActivity {
+public class CategoriesSetupActivity extends BaseActivity {
 
     private static final String KEY_CATEGORIES = "categories_list";
     private static final String KEY_CATEGORIES_WITHDRAW = "categories_withdraw";
@@ -28,7 +27,6 @@ public class CategoriesSetupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferencesHelper.applyNightMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories_setup);
 
@@ -52,12 +50,6 @@ public class CategoriesSetupActivity extends AppCompatActivity {
             addElement(null);
             addElement(null);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     private void addElement(String prefill) {
@@ -142,7 +134,6 @@ public class CategoriesSetupActivity extends AppCompatActivity {
         intent.putStringArrayListExtra("elements", elementList);
         intent.putExtra("withdrawMode", withdrawMode);
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private void removeEmptyElements() {

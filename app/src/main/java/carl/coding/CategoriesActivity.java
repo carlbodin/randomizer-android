@@ -1,19 +1,16 @@
 package carl.coding;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class CategoriesActivity extends AppCompatActivity {
+public class CategoriesActivity extends BaseActivity {
 
     private static final float RESULT_TEXT_SIZE_SP = 38f;
 
@@ -23,15 +20,12 @@ public class CategoriesActivity extends AppCompatActivity {
     private TextView poolStatusText;
     private Button pickButton;
     private Button resetButton;
-    private Random random;
-    private Handler handler;
+    private final Random random = new Random();
     private Runnable rollingRunnable;
-    private Vibrator vibrator;
     private boolean withdrawMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferencesHelper.applyNightMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
@@ -46,10 +40,6 @@ public class CategoriesActivity extends AppCompatActivity {
         poolStatusText = findViewById(R.id.pool_status_text);
         pickButton = findViewById(R.id.pick_button);
         resetButton = findViewById(R.id.reset_button);
-
-        random = new Random();
-        handler = new Handler();
-        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         pickButton.setOnClickListener(v -> pickNextElement());
         resetButton.setOnClickListener(v -> resetPool());
@@ -83,9 +73,7 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         };
 
-        if (vibrator != null) {
-            vibrator.vibrate(250);
-        }
+        vibrate(250);
         rollThroughElements();
     }
 
@@ -137,11 +125,5 @@ public class CategoriesActivity extends AppCompatActivity {
         } else {
             poolStatusText.setText("Standard mode, picks stay in the pool.");
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

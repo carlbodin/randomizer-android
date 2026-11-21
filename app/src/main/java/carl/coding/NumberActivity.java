@@ -1,28 +1,23 @@
 package carl.coding;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Vibrator;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.Random;
 
-public class NumberActivity extends AppCompatActivity {
+public class NumberActivity extends BaseActivity {
 
     private static final String KEY_NUMBER_MIN = "number_min";
     private static final String KEY_NUMBER_MAX = "number_max";
     private static final float RESULT_TEXT_SIZE_SP = 42f;
 
     private final Random random = new Random();
-    private final Handler handler = new Handler(Looper.getMainLooper());
     private EditText minInput;
     private EditText maxInput;
     private TextView resultText;
@@ -30,7 +25,6 @@ public class NumberActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferencesHelper.applyNightMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_number);
 
@@ -146,29 +140,10 @@ public class NumberActivity extends AppCompatActivity {
         return min + (long) Math.floor(random.nextDouble() * range);
     }
 
-    private void vibrate(long durationMs) {
-        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        if (vibrator != null) {
-            vibrator.vibrate(durationMs);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        handler.removeCallbacksAndMessages(null);
-        super.onDestroy();
-    }
-
     @Override
     protected void onPause() {
         PreferencesHelper.setString(this, KEY_NUMBER_MIN, minInput.getText().toString().trim());
         PreferencesHelper.setString(this, KEY_NUMBER_MAX, maxInput.getText().toString().trim());
         super.onPause();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

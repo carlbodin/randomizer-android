@@ -13,13 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TeamSetupActivity extends AppCompatActivity {
+public class TeamSetupActivity extends BaseActivity {
 
     private static final String KEY_TEAM_PLAYERS = "team_players";
     private static final String KEY_TEAM_COUNT = "team_count";
@@ -30,7 +29,6 @@ public class TeamSetupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferencesHelper.applyNightMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_setup);
 
@@ -143,7 +141,6 @@ public class TeamSetupActivity extends AppCompatActivity {
         intent.putStringArrayListExtra("players", players);
         intent.putExtra("teamCount", teamCount);
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private void collectPlayers() {
@@ -184,12 +181,6 @@ public class TeamSetupActivity extends AppCompatActivity {
     protected void onPause() {
         persistState();
         super.onPause();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     private int dp(int value) {

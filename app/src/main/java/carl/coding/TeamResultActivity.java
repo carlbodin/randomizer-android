@@ -1,16 +1,14 @@
 package carl.coding;
 
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TeamResultActivity extends AppCompatActivity {
+public class TeamResultActivity extends BaseActivity {
 
     private ArrayList<String> players;
     private int teamCount;
@@ -18,7 +16,6 @@ public class TeamResultActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferencesHelper.applyNightMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_result);
 
@@ -61,15 +58,6 @@ public class TeamResultActivity extends AppCompatActivity {
         }
         resultText.setText(builder.toString().trim());
 
-        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        if (vibrator != null) {
-            vibrator.vibrate(180);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        vibrate(180);
     }
 }
