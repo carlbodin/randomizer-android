@@ -20,7 +20,7 @@ public class CategoriesSetupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories_setup);
 
-        categories = new EditableList(findViewById(R.id.element_list_layout), "Category name",
+        categories = new EditableList(findViewById(R.id.element_list_layout), getString(R.string.categories_hint),
                 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         withdrawSwitch = findViewById(R.id.withdraw_switch);
 

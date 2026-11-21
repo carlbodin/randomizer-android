@@ -14,7 +14,7 @@ public class StartMenu extends BaseActivity {
         ImageButton themeToggleButton = findViewById(R.id.themeToggleButton);
         boolean darkModeEnabled = PreferencesHelper.isDarkModeEnabled(this);
         themeToggleButton.setImageResource(darkModeEnabled ? R.drawable.ic_theme_sun : R.drawable.ic_theme_moon);
-        themeToggleButton.setContentDescription(darkModeEnabled ? "Switch to light mode" : "Switch to dark mode");
+        themeToggleButton.setContentDescription(getString(darkModeEnabled ? R.string.theme_to_light : R.string.theme_to_dark));
         themeToggleButton.setOnClickListener(v -> {
             PreferencesHelper.setDarkModeEnabled(this, !darkModeEnabled);
             // Changing the default night mode recreates every started activity.

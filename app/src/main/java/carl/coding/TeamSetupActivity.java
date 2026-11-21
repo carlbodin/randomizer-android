@@ -21,7 +21,7 @@ public class TeamSetupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_setup);
 
-        players = new EditableList(findViewById(R.id.player_list_layout), "Player name",
+        players = new EditableList(findViewById(R.id.player_list_layout), getString(R.string.teams_player_hint),
                 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         teamCountInput = findViewById(R.id.team_count_input);
 
@@ -38,7 +38,7 @@ public class TeamSetupActivity extends BaseActivity {
 
         ArrayList<String> names = players.values();
         if (names.size() < 2) {
-            Toast.makeText(this, "Add at least two players.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.teams_need_two, Toast.LENGTH_SHORT).show();
             return;
         }
 

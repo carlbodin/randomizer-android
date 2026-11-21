@@ -22,7 +22,7 @@ public class YesNoActivity extends BaseActivity {
     }
 
     private void pickAnswer() {
-        resultText.setText(random.nextBoolean() ? "YES" : "NO");
+        resultText.setText(random.nextBoolean() ? R.string.yes : R.string.no);
         vibrate(140);
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="1"
@@ -12,14 +13,15 @@
         android:layout_height="56dp"
         android:background="@drawable/die_hold_background"
         android:padding="4dp"
-        android:src="@drawable/dice_1_512" />
+        android:src="@drawable/dice_1_512"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/die_hold_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="Held"
+        android:text="@string/yatzy_held"
         android:textColor="@color/accent"
         android:textSize="13sp"
         android:textStyle="bold"

@@ -33,11 +33,6 @@ public class NumberActivity extends BaseActivity {
         resultText = findViewById(R.id.number_result_text);
         generateButton = findViewById(R.id.generate_number_button);
 
-        minInput.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
-        minInput.setHintTextColor(ContextCompat.getColor(this, R.color.text_secondary));
-        maxInput.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
-        maxInput.setHintTextColor(ContextCompat.getColor(this, R.color.text_secondary));
-
         minInput.setText(PreferencesHelper.getString(this, KEY_NUMBER_MIN, ""));
         maxInput.setText(PreferencesHelper.getString(this, KEY_NUMBER_MAX, ""));
 
@@ -49,9 +44,9 @@ public class NumberActivity extends BaseActivity {
         String maxText = maxInput.getText().toString().trim();
 
         if (TextUtils.isEmpty(minText) || TextUtils.isEmpty(maxText)) {
-            minInput.setError(TextUtils.isEmpty(minText) ? "Required" : null);
-            maxInput.setError(TextUtils.isEmpty(maxText) ? "Required" : null);
-            Toast.makeText(this, "Enter both min and max.", Toast.LENGTH_SHORT).show();
+            minInput.setError(TextUtils.isEmpty(minText) ? getString(R.string.number_required) : null);
+            maxInput.setError(TextUtils.isEmpty(maxText) ? getString(R.string.number_required) : null);
+            Toast.makeText(this, R.string.number_enter_both, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -61,17 +56,17 @@ public class NumberActivity extends BaseActivity {
         Long parsedMin = parseWholeNumber(minText);
         Long parsedMax = parseWholeNumber(maxText);
         if (parsedMin == null || parsedMax == null) {
-            minInput.setError(parsedMin == null ? "Invalid number" : null);
-            maxInput.setError(parsedMax == null ? "Invalid number" : null);
-            Toast.makeText(this, "Use valid whole numbers.", Toast.LENGTH_SHORT).show();
+            minInput.setError(parsedMin == null ? getString(R.string.number_invalid) : null);
+            maxInput.setError(parsedMax == null ? getString(R.string.number_invalid) : null);
+            Toast.makeText(this, R.string.number_use_whole, Toast.LENGTH_SHORT).show();
             return;
         }
         long min = parsedMin;
         long max = parsedMax;
 
         if (min >= max) {
-            maxInput.setError("Must be greater than min");
-            Toast.makeText(this, "Maximum must be greater than minimum.", Toast.LENGTH_SHORT).show();
+            maxInput.setError(getString(R.string.number_max_greater));
+            Toast.makeText(this, R.string.number_max_greater_toast, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -79,7 +74,7 @@ public class NumberActivity extends BaseActivity {
         PreferencesHelper.setString(this, KEY_NUMBER_MAX, maxText);
 
         generateButton.setEnabled(false);
-        generateButton.setText("Generating...");
+        generateButton.setText(R.string.number_generating);
         resultText.setTextColor(ContextCompat.getColor(this, R.color.text_feedback_muted));
         resultText.setTextSize(RESULT_TEXT_SIZE_SP);
         resultText.setText("...");
@@ -117,7 +112,7 @@ public class NumberActivity extends BaseActivity {
         resultText.animate().scaleX(1f).scaleY(1f).setDuration(140).start();
 
         generateButton.setEnabled(true);
-        generateButton.setText("Generate");
+        generateButton.setText(R.string.number_generate);
 
         vibrate(140);
     }

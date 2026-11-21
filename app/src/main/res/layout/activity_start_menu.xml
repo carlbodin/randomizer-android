@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:padding="24dp"
@@ -30,6 +30,7 @@
                     android:id="@+id/imageView"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/dice256" />
 
                 <LinearLayout
@@ -42,7 +43,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Randomizer"
+                        android:text="@string/app_name"
                         android:textColor="@color/text_primary"
                         android:textSize="32sp"
                         android:textStyle="bold" />
@@ -51,7 +52,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Classic picks, teams, numbers, and more"
+                        android:text="@string/menu_tagline"
                         android:textColor="@color/text_secondary"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -68,94 +69,73 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Modes"
+                    android:text="@string/menu_modes"
                     android:textColor="@color/text_primary"
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
                 <Button
+                    style="@style/Widget.Randomizer.Button"
                     android:id="@+id/coinButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/button_selector"
                     android:onClick="goCoin"
-                    android:text="Coin"
-                    android:textAllCaps="false"
-                    android:textColor="@color/button_text"
-                    android:textSize="18sp" />
+                    android:text="@string/mode_coin" />
 
                 <Button
+                    style="@style/Widget.Randomizer.Button"
                     android:id="@+id/diceButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="12dp"
-                    android:background="@drawable/button_selector"
                     android:onClick="goDice"
-                    android:text="Dice"
-                    android:textAllCaps="false"
-                    android:textColor="@color/button_text"
-                    android:textSize="18sp" />
+                    android:text="@string/mode_dice" />
 
                 <Button
+                    style="@style/Widget.Randomizer.Button"
                     android:id="@+id/yatzyButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="12dp"
-                    android:background="@drawable/button_selector"
                     android:onClick="goYatzy"
-                    android:text="Yatzy dice"
-                    android:textAllCaps="false"
-                    android:textColor="@color/button_text"
-                    android:textSize="18sp" />
+                    android:text="@string/mode_yatzy" />
 
                 <Button
+                    style="@style/Widget.Randomizer.Button"
                     android:id="@+id/yesNoButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="12dp"
-                    android:background="@drawable/button_selector"
                     android:onClick="goYesNo"
-                    android:text="Yes or no"
-                    android:textAllCaps="false"
-                    android:textColor="@color/button_text"
-                    android:textSize="18sp" />
+                    android:text="@string/mode_yes_no" />
 
                 <Button
+                    style="@style/Widget.Randomizer.Button"
                     android:id="@+id/categoriesButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="12dp"
-                    android:background="@drawable/button_selector"
                     android:onClick="goCategories"
-                    android:text="Categories"
-                    android:textAllCaps="false"
-                    android:textColor="@color/button_text"
-                    android:textSize="18sp" />
+                    android:text="@string/mode_categories" />
 
                 <Button
+                    style="@style/Widget.Randomizer.Button"
                     android:id="@+id/teamButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="12dp"
-                    android:background="@drawable/button_selector"
                     android:onClick="goTeams"
-                    android:text="Team randomizer"
-                    android:textAllCaps="false"
-                    android:textColor="@color/button_text"
-                    android:textSize="18sp" />
+                    android:text="@string/mode_teams" />
 
                 <Button
+                    style="@style/Widget.Randomizer.Button"
                     android:id="@+id/numberButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="12dp"
-                    android:background="@drawable/button_selector"
                     android:onClick="goNumbers"
-                    android:text="Number generator"
-                    android:textAllCaps="false"
-                    android:textColor="@color/button_text"
-                    android:textSize="18sp" />
+                    android:text="@string/mode_number" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -168,9 +148,9 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/theme_toggle_button_background"
-        android:contentDescription="Toggle theme"
+        android:contentDescription="@string/theme_to_dark"
         android:padding="14dp"
         android:scaleType="centerInside"
-        android:tint="@color/text_primary" />
+        app:tint="@color/text_primary" />
 
 </FrameLayout>

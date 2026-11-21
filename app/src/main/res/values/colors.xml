@@ -11,6 +11,4 @@
     <color name="accent_disabled">#A8BEF6</color>
     <color name="button_text">#FFFFFFFF</color>
     <color name="hold_highlight">#264D7EF7</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
 </resources>

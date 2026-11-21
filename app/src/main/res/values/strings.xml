@@ -1,5 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Randomizer</string>
-    <string name="rollButtonText">Roll</string>
+
+    <!-- Start menu -->
+    <string name="menu_tagline">Classic picks, teams, numbers, and more</string>
+    <string name="menu_modes">Modes</string>
+    <string name="mode_coin">Coin</string>
+    <string name="mode_dice">Dice</string>
+    <string name="mode_yatzy">Yatzy dice</string>
+    <string name="mode_yes_no">Yes or no</string>
+    <string name="mode_categories">Categories</string>
+    <string name="mode_teams">Team randomizer</string>
+    <string name="mode_number">Number generator</string>
+    <string name="theme_to_dark">Switch to dark mode</string>
+    <string name="theme_to_light">Switch to light mode</string>
+
+    <!-- Shared -->
+    <string name="ready">Ready</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="start">Start</string>
+    <string name="roll">Roll</string>
+
+    <!-- Coin -->
+    <string name="coin_flip">Flip</string>
+    <string name="coin_heads">HEADS</string>
+    <string name="coin_tails">TAILS</string>
+
+    <!-- Yatzy -->
+    <string name="yatzy_hint_first">Roll, then tap dice to hold them.</string>
+    <string name="yatzy_hint_hold">Tap dice to hold or release them.</string>
+    <string name="yatzy_held">Held</string>
+    <string name="yatzy_sum">Sum: %1$d</string>
+    <string name="yatzy_die_description">%1$d</string>
+    <string name="yatzy_die_held_description">%1$d, held</string>
+
+    <!-- Yes or no -->
+    <string name="yes_no_decide">Decide</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+
+    <!-- Categories -->
+    <string name="categories_intro">Enter your options, then pick one at random.</string>
+    <string name="categories_withdraw">Withdraw picked option from the pool</string>
+    <string name="categories_hint">Category name</string>
+    <string name="categories_result">Result</string>
+    <string name="categories_pick">Pick next</string>
+    <string name="categories_reset">Reset pool</string>
+    <string name="categories_standard_mode">Standard mode, picks stay in the pool.</string>
+    <string name="categories_pool_empty">Withdraw mode on, all categories have been used.</string>
+    <plurals name="categories_pool_left">
+        <item quantity="one">Withdraw mode on, %1$d left in the pool.</item>
+        <item quantity="other">Withdraw mode on, %1$d left in the pool.</item>
+    </plurals>
+
+    <!-- Teams -->
+    <string name="teams_intro">Shuffle players into even teams.</string>
+    <string name="teams_count_hint">Number of teams</string>
+    <string name="teams_player_hint">Player name</string>
+    <string name="teams_add_player">Add player</string>
+    <string name="teams_shuffle">Shuffle teams</string>
+    <string name="teams_shuffle_again">Shuffle again</string>
+    <string name="teams_title">Teams</string>
+    <string name="teams_team">Team %1$d</string>
+    <string name="teams_need_two">Add at least two players.</string>
+    <string name="teams_no_players">No players available.</string>
+
+    <!-- Number generator -->
+    <string name="number_min_hint">Minimum</string>
+    <string name="number_max_hint">Maximum</string>
+    <string name="number_generate">Generate</string>
+    <string name="number_generating">Generating…</string>
+    <string name="number_required">Required</string>
+    <string name="number_enter_both">Enter both min and max.</string>
+    <string name="number_invalid">Invalid number</string>
+    <string name="number_use_whole">Use valid whole numbers.</string>
+    <string name="number_max_greater">Must be greater than min</string>
+    <string name="number_max_greater_toast">Maximum must be greater than minimum.</string>
 </resources>

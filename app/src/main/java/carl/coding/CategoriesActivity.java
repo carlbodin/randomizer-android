@@ -89,7 +89,7 @@ public class CategoriesActivity extends BaseActivity {
     private void resetPool() {
         handler.removeCallbacksAndMessages(null);
         activeList = new ArrayList<>(originalList);
-        resultText.setText("Ready");
+        resultText.setText(R.string.ready);
         resultText.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
         pickButton.setEnabled(!activeList.isEmpty());
         updatePoolStatus();
@@ -97,11 +97,12 @@ public class CategoriesActivity extends BaseActivity {
 
     private void updatePoolStatus() {
         if (!withdrawMode) {
-            poolStatusText.setText("Standard mode, picks stay in the pool.");
+            poolStatusText.setText(R.string.categories_standard_mode);
         } else if (activeList.isEmpty()) {
-            poolStatusText.setText("Withdraw mode on, all categories have been used.");
+            poolStatusText.setText(R.string.categories_pool_empty);
         } else {
-            poolStatusText.setText("Withdraw mode on, " + activeList.size() + " left in the pool.");
+            poolStatusText.setText(getResources().getQuantityString(
+                    R.plurals.categories_pool_left, activeList.size(), activeList.size()));
         }
     }
 }

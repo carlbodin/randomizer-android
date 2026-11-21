@@ -23,36 +23,28 @@
         app:layout_constraintVertical_bias="0.6">
 
         <TextView
+            style="@style/Widget.Randomizer.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number generator"
-            android:textColor="@color/text_primary"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:text="@string/mode_number" />
 
         <EditText
+            style="@style/Widget.Randomizer.Input"
             android:id="@+id/min_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@drawable/input_background"
-            android:hint="Minimum"
-            android:inputType="numberSigned"
-            android:padding="16dp"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary" />
+            android:hint="@string/number_min_hint"
+            android:inputType="numberSigned" />
 
         <EditText
+            style="@style/Widget.Randomizer.Input"
             android:id="@+id/max_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:background="@drawable/input_background"
-            android:hint="Maximum"
-            android:inputType="numberSigned"
-            android:padding="16dp"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary" />
+            android:hint="@string/number_max_hint"
+            android:inputType="numberSigned" />
 
         <TextView
             android:id="@+id/number_result_text"
@@ -70,17 +62,14 @@
     </LinearLayout>
 
     <Button
+        style="@style/Widget.Randomizer.Button"
         android:id="@+id/generate_number_button"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/button_selector"
-        android:text="Generate"
-        android:textAllCaps="false"
-        android:textColor="@color/button_text"
-        android:textSize="18sp"
+        android:text="@string/number_generate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

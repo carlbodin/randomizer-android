@@ -62,7 +62,7 @@ public class CoinActivity extends BaseActivity {
         flipAnimator.start();
         handler.postDelayed(() -> {
             showFace();
-            coinFlipResult.setText(heads ? "HEADS" : "TAILS");
+            coinFlipResult.setText(heads ? R.string.coin_heads : R.string.coin_tails);
             landAnimator.start();
             flipButton.setEnabled(true);
         }, FLIP_DURATION_MS);

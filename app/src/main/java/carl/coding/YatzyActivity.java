@@ -94,9 +94,9 @@ public class YatzyActivity extends BaseActivity {
                 dieImages[i].setScaleY(1f);
                 sum += values[i];
             }
-            resultText.setText("Sum: " + sum);
+            resultText.setText(getString(R.string.yatzy_sum, sum));
             resultText.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
-            hintText.setText("Tap dice to hold or release them.");
+            hintText.setText(R.string.yatzy_hint_hold);
             rolled = true;
             rolling = false;
             rollButton.setEnabled(true);
@@ -115,6 +115,7 @@ public class YatzyActivity extends BaseActivity {
         dieImages[index].setImageResource(Dice.face(values[index]));
         dieImages[index].setSelected(held[index]);
         holdLabels[index].setVisibility(held[index] ? View.VISIBLE : View.INVISIBLE);
-        dieImages[index].setContentDescription(values[index] + (held[index] ? ", held" : ""));
+        dieImages[index].setContentDescription(getString(
+                held[index] ? R.string.yatzy_die_held_description : R.string.yatzy_die_description, values[index]));
     }
 }

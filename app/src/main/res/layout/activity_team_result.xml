@@ -23,12 +23,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            style="@style/Widget.Randomizer.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Teams"
-            android:textColor="@color/text_primary"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:text="@string/teams_title" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -47,17 +45,14 @@
     </LinearLayout>
 
     <Button
+        style="@style/Widget.Randomizer.Button"
         android:id="@+id/reroll_teams_button"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/button_selector"
-        android:text="Shuffle again"
-        android:textAllCaps="false"
-        android:textColor="@color/button_text"
-        android:textSize="18sp"
+        android:text="@string/teams_shuffle_again"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

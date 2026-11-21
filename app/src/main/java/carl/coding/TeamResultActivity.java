@@ -36,7 +36,7 @@ public class TeamResultActivity extends BaseActivity {
 
     private void renderTeams() {
         if (players == null || players.isEmpty()) {
-            resultText.setText("No players available.");
+            resultText.setText(R.string.teams_no_players);
             return;
         }
 
@@ -46,7 +46,7 @@ public class TeamResultActivity extends BaseActivity {
             if (i > 0) {
                 builder.append("\n\n");
             }
-            builder.append("Team ").append(i + 1);
+            builder.append(getString(R.string.teams_team, i + 1));
             for (String player : teams.get(i)) {
                 builder.append("\n• ").append(player);
             }
