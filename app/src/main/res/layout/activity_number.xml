@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="@string/number_max_hint"
+            android:imeOptions="actionGo"
             android:inputType="numberSigned" />
 
         <TextView

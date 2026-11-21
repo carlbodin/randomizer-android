@@ -2,6 +2,9 @@ package carl.coding;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,6 +40,14 @@ public class NumberActivity extends BaseActivity {
         maxInput.setText(PreferencesHelper.getString(this, KEY_NUMBER_MAX, ""));
 
         generateButton.setOnClickListener(v -> generateNumber());
+        maxInput.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId != EditorInfo.IME_ACTION_GO) {
+                return false;
+            }
+            hideKeyboard(v);
+            generateNumber();
+            return true;
+        });
     }
 
     private void generateNumber() {
@@ -115,6 +126,13 @@ public class NumberActivity extends BaseActivity {
         generateButton.setText(R.string.number_generate);
 
         vibrate(140);
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private long nextRandomLong(long min, long max) {
