@@ -50,4 +50,4 @@ scripts/capture_readme_screenshots.sh          # regenerate README screenshots (
 - One concern per commit, with a concise imperative subject line.
 - No AI or co-author attribution lines.
 - Don't commit `local.properties`, build output or `__pycache__`.
-- Pushing to `main` triggers `.github/workflows/android-debug-release.yml`, which publishes the debug APK to the `randomizer-android-debug-latest` prerelease.
+- Running `.github/workflows/android-debug-release.yml` manually (Actions tab, workflow_dispatch) publishes the debug APK to the `randomizer-android-debug-latest` prerelease.

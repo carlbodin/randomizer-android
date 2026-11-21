@@ -1,9 +1,6 @@
 name: Android Debug Release
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
@@ -44,7 +41,7 @@ jobs:
           body: |
             Latest informal debug APK build for Randomizer.
 
-            This release is updated automatically from the `main` branch workflow.
+            Built on demand by running the workflow manually.
           prerelease: true
           allowUpdates: true
           replacesArtifacts: true
