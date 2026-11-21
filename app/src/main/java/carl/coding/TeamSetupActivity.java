@@ -3,7 +3,6 @@ package carl.coding;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,14 +42,7 @@ public class TeamSetupActivity extends BaseActivity {
             return;
         }
 
-        String teamCountText = teamCountInput.getText().toString().trim();
-        int teamCount = TextUtils.isEmpty(teamCountText) ? 2 : Integer.parseInt(teamCountText);
-        if (teamCount < 2) {
-            teamCount = 2;
-        }
-        if (teamCount > names.size()) {
-            teamCount = names.size();
-        }
+        int teamCount = Teams.teamCount(teamCountInput.getText().toString(), names.size());
 
         Intent intent = new Intent(this, TeamResultActivity.class);
         intent.putStringArrayListExtra(TeamResultActivity.EXTRA_PLAYERS, names);

@@ -4,15 +4,16 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class TeamResultActivity extends BaseActivity {
 
     static final String EXTRA_PLAYERS = "players";
     static final String EXTRA_TEAM_COUNT = "teamCount";
 
+    private final Random random = new Random();
     private ArrayList<String> players;
     private int teamCount;
     private TextView resultText;
@@ -23,7 +24,7 @@ public class TeamResultActivity extends BaseActivity {
         setContentView(R.layout.activity_team_result);
 
         players = getIntent().getStringArrayListExtra(EXTRA_PLAYERS);
-        teamCount = getIntent().getIntExtra(EXTRA_TEAM_COUNT, 2);
+        teamCount = getIntent().getIntExtra(EXTRA_TEAM_COUNT, Teams.MIN_TEAMS);
         resultText = findViewById(R.id.team_result_text);
         Button rerollButton = findViewById(R.id.reroll_teams_button);
 
@@ -37,30 +38,18 @@ public class TeamResultActivity extends BaseActivity {
             return;
         }
 
-        ArrayList<String> shuffled = new ArrayList<>(players);
-        Collections.shuffle(shuffled);
-
-        ArrayList<ArrayList<String>> teams = new ArrayList<>();
-        for (int i = 0; i < teamCount; i++) {
-            teams.add(new ArrayList<>());
-        }
-
-        for (int i = 0; i < shuffled.size(); i++) {
-            teams.get(i % teamCount).add(shuffled.get(i));
-        }
-
+        List<List<String>> teams = Teams.split(players, teamCount, random);
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < teams.size(); i++) {
-            builder.append("Team ").append(i + 1).append("\n");
-            for (String player : teams.get(i)) {
-                builder.append("• ").append(player).append("\n");
+            if (i > 0) {
+                builder.append("\n\n");
             }
-            if (i < teams.size() - 1) {
-                builder.append("\n");
+            builder.append("Team ").append(i + 1);
+            for (String player : teams.get(i)) {
+                builder.append("\n• ").append(player);
             }
         }
-        resultText.setText(builder.toString().trim());
-
+        resultText.setText(builder);
         vibrate(180);
     }
 }

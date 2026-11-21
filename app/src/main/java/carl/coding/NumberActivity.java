@@ -58,28 +58,19 @@ public class NumberActivity extends BaseActivity {
         minInput.setError(null);
         maxInput.setError(null);
 
-        long min;
-        long max;
-        try {
-            min = Long.parseLong(minText);
-            max = Long.parseLong(maxText);
-        } catch (NumberFormatException exception) {
-            minInput.setError("Invalid number");
-            maxInput.setError("Invalid number");
+        Long parsedMin = parseWholeNumber(minText);
+        Long parsedMax = parseWholeNumber(maxText);
+        if (parsedMin == null || parsedMax == null) {
+            minInput.setError(parsedMin == null ? "Invalid number" : null);
+            maxInput.setError(parsedMax == null ? "Invalid number" : null);
             Toast.makeText(this, "Use valid whole numbers.", Toast.LENGTH_SHORT).show();
             return;
         }
+        long min = parsedMin;
+        long max = parsedMax;
 
-        if (min > max) {
-            minInput.setError("Must be less than or equal to max");
-            maxInput.setError("Must be greater than or equal to min");
-            Toast.makeText(this, "Minimum must be less than or equal to maximum.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (min == max) {
-            minInput.setError("Must be strictly less than max");
-            maxInput.setError("Must be strictly greater than min");
+        if (min >= max) {
+            maxInput.setError("Must be greater than min");
             Toast.makeText(this, "Maximum must be greater than minimum.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -132,12 +123,15 @@ public class NumberActivity extends BaseActivity {
     }
 
     private long nextRandomLong(long min, long max) {
-        if (min == max) {
-            return min;
-        }
+        return RandomRange.between(random, min, max);
+    }
 
-        double range = (double) max - (double) min + 1d;
-        return min + (long) Math.floor(random.nextDouble() * range);
+    private static Long parseWholeNumber(String text) {
+        try {
+            return Long.parseLong(text);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     @Override
