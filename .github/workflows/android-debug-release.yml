@@ -35,17 +35,17 @@ jobs:
       - name: Upload debug APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: randomizerapp-debug-apk
+          name: randomizer-android-debug-apk
           path: app/build/outputs/apk/debug/randomizer-debug.apk
           if-no-files-found: error
 
       - name: Publish debug prerelease
         uses: ncipollo/release-action@v1
         with:
-          tag: randomizerapp-debug-latest
-          name: Randomizer App Debug APK
+          tag: randomizer-android-debug-latest
+          name: Randomizer Debug APK
           body: |
-            Latest informal debug APK build for Randomizer App.
+            Latest informal debug APK build for Randomizer.
 
             This release is updated automatically from the `main` branch workflow.
           prerelease: true
