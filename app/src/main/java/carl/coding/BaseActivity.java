@@ -22,6 +22,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected final Handler handler = new Handler(Looper.getMainLooper());
     private Vibrator vibrator;
 
+    @SuppressWarnings("deprecation") // VIBRATOR_SERVICE is the only option before API 31.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
