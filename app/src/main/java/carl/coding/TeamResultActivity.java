@@ -10,6 +10,9 @@ import java.util.Collections;
 
 public class TeamResultActivity extends BaseActivity {
 
+    static final String EXTRA_PLAYERS = "players";
+    static final String EXTRA_TEAM_COUNT = "teamCount";
+
     private ArrayList<String> players;
     private int teamCount;
     private TextView resultText;
@@ -19,8 +22,8 @@ public class TeamResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_result);
 
-        players = getIntent().getStringArrayListExtra("players");
-        teamCount = getIntent().getIntExtra("teamCount", 2);
+        players = getIntent().getStringArrayListExtra(EXTRA_PLAYERS);
+        teamCount = getIntent().getIntExtra(EXTRA_TEAM_COUNT, 2);
         resultText = findViewById(R.id.team_result_text);
         Button rerollButton = findViewById(R.id.reroll_teams_button);
 

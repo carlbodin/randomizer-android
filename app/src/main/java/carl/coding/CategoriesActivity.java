@@ -12,6 +12,9 @@ import java.util.Random;
 
 public class CategoriesActivity extends BaseActivity {
 
+    static final String EXTRA_ELEMENTS = "elements";
+    static final String EXTRA_WITHDRAW_MODE = "withdrawMode";
+
     private static final float RESULT_TEXT_SIZE_SP = 38f;
 
     private ArrayList<String> originalList;
@@ -29,12 +32,12 @@ public class CategoriesActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
-        originalList = getIntent().getStringArrayListExtra("elements");
+        originalList = getIntent().getStringArrayListExtra(EXTRA_ELEMENTS);
         if (originalList == null) {
             originalList = new ArrayList<>();
         }
         activeList = new ArrayList<>(originalList);
-        withdrawMode = getIntent().getBooleanExtra("withdrawMode", false);
+        withdrawMode = getIntent().getBooleanExtra(EXTRA_WITHDRAW_MODE, false);
 
         resultText = findViewById(R.id.result_text);
         poolStatusText = findViewById(R.id.pool_status_text);
