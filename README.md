@@ -1,4 +1,7 @@
-<img src="docs/readme-assets/icon.png" alt="" width="96" align="right">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/icon-dark.png">
+  <img src="docs/readme-assets/icon-light.png" alt="" width="96" align="right">
+</picture>
 
 # Randomizer
 

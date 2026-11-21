@@ -13,6 +13,8 @@ public class StartMenu extends BaseActivity {
 
         ImageButton themeToggleButton = findViewById(R.id.themeToggleButton);
         boolean darkModeEnabled = PreferencesHelper.isDarkModeEnabled(this);
+        // Toggling the theme recreates this activity, so this also follows every switch.
+        LauncherIcon.apply(this, darkModeEnabled);
         themeToggleButton.setImageResource(darkModeEnabled ? R.drawable.ic_theme_sun : R.drawable.ic_theme_moon);
         themeToggleButton.setContentDescription(getString(darkModeEnabled ? R.string.theme_to_light : R.string.theme_to_dark));
         themeToggleButton.setOnClickListener(v -> {

@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """Generate the launcher icon and in-app logo from one geometry definition.
 
+The icon comes in a light and a dark palette (<p> below). The launcher icons are
+separate resources because the app switches between two launcher activity-aliases
+when its theme changes (see LauncherIcon.java). The logo uses the -night qualifier,
+since it is shown inside the app, which follows the app theme.
+
 Writes (relative to the repo root):
-  app/src/main/res/drawable/ic_launcher_background.xml   adaptive icon background
-  app/src/main/res/drawable/ic_launcher_foreground.xml   adaptive icon foreground
-  app/src/main/res/drawable/ic_launcher_monochrome.xml   themed (Android 13+) icon
-  app/src/main/res/drawable/logo.xml                     rounded logo for the start menu
-  app/src/main/res/mipmap-*/ic_launcher(_round).png      legacy icons for API < 26
-  docs/readme-assets/icon.png                            README header image
+  app/src/main/res/drawable/ic_launcher_background_<p>.xml   adaptive icon background
+  app/src/main/res/drawable/ic_launcher_foreground_<p>.xml   adaptive icon foreground
+  app/src/main/res/drawable/ic_launcher_monochrome.xml       themed (Android 13+) icon, shared
+  app/src/main/res/mipmap-anydpi-v26/ic_launcher_<p>.xml     adaptive icon
+  app/src/main/res/mipmap-*/ic_launcher_<p>.png              legacy icons for API < 26
+  app/src/main/res/drawable(-night)/logo.xml                 rounded logo for the start menu
+  docs/readme-assets/icon-<p>.png                            README header image
 
 Requires Pillow. Run from anywhere: python3 scripts/generate_icon.py
 """
@@ -19,21 +25,37 @@ from PIL import Image, ImageDraw
 ROOT = Path(__file__).resolve().parent.parent
 RES = ROOT / "app/src/main/res"
 
-# Colours follow app/src/main/res/values-night/colors.xml.
-BG_TOP = "#1B2740"      # between surface_background and surface_stroke
-BG_BOTTOM = "#0F172A"   # screen_background (night)
-ACCENT = "#6E97FF"      # accent (night)
-PIP = "#F8FAFC"         # text_primary (night)
-BACK_FILL = "#27334B"   # surface_stroke (night)
+# Colours follow app/src/main/res/values(-night)/colors.xml.
+PALETTES = {
+    "light": dict(
+        bg_top="#FFFFFF",       # surface_background
+        bg_bottom="#DCE6FF",    # between screen_background and surface_stroke
+        accent="#4D7EF7",       # accent
+        pip="#FFFFFF",          # button_text
+        back_fill="#FFFFFF",    # surface_background
+    ),
+    "dark": dict(
+        bg_top="#1B2740",       # between surface_background and surface_stroke
+        bg_bottom="#0F172A",    # screen_background
+        accent="#6E97FF",       # accent
+        pip="#F8FAFC",          # text_primary
+        back_fill="#27334B",    # surface_stroke
+    ),
+}
+# Logo resource folder per palette.
+LOGO_FOLDER = {"light": "drawable", "dark": "drawable-night"}
 
-# Geometry in the 108x108 adaptive-icon viewport (safe zone: circle r=33 at 54,54).
-# Each die: centre, size, corner radius, rotation (degrees), fill, pip colour, pips.
-DICE = [
-    dict(cx=43, cy=44, size=28, r=7, rot=-14, fill=BACK_FILL, stroke=ACCENT,
-         pip=ACCENT, pip_r=2.6, pips=[(-7, -7), (0, 0), (7, 7)]),
-    dict(cx=61, cy=62, size=34, r=8.5, rot=12, fill=ACCENT, stroke=None,
-         pip=PIP, pip_r=3.3, pips=[(-9, -9), (9, -9), (0, 0), (-9, 9), (9, 9)]),
-]
+
+def dice(pal):
+    """Geometry in the 108x108 adaptive-icon viewport (safe zone: circle r=33 at 54,54).
+    Each die: centre, size, corner radius, rotation (degrees), fill, pip colour, pips."""
+    return [
+        dict(cx=43, cy=44, size=28, r=7, rot=-14, fill=pal["back_fill"], stroke=pal["accent"],
+             pip=pal["accent"], pip_r=2.6, pips=[(-7, -7), (0, 0), (7, 7)]),
+        dict(cx=61, cy=62, size=34, r=8.5, rot=12, fill=pal["accent"], stroke=None,
+             pip=pal["pip"], pip_r=3.3, pips=[(-9, -9), (9, -9), (0, 0), (-9, 9), (9, 9)]),
+    ]
+
 STROKE_W = 1.6
 
 
@@ -53,9 +75,9 @@ def circle_path(cx, cy, r):
     return f"M{f(cx - r)},{f(cy)} A{f(r)},{f(r)} 0 1 0 {f(cx + r)},{f(cy)} A{f(r)},{f(r)} 0 1 0 {f(cx - r)},{f(cy)} Z"
 
 
-def dice_vector_groups(mono=False):
+def dice_vector_groups(pal, mono=False):
     out = []
-    for d in DICE:
+    for d in dice(pal):
         half = d["size"] / 2
         body = rounded_rect_path(d["cx"] - half, d["cy"] - half, d["size"], d["size"], d["r"])
         pips = " ".join(circle_path(d["cx"] + px, d["cy"] + py, d["pip_r"]) for px, py in d["pips"])
@@ -87,48 +109,66 @@ def vector(body, size_dp=108):
             f'{body}\n</vector>\n')
 
 
-def gradient_path(path_data):
+def gradient_path(pal, path_data):
     return ('    <path android:pathData="' + path_data + '">\n'
             '        <aapt:attr name="android:fillColor">\n'
             '            <gradient\n'
             '                android:type="linear"\n'
             '                android:startX="54" android:startY="0"\n'
             '                android:endX="54" android:endY="108"\n'
-            f'                android:startColor="{BG_TOP}"\n'
-            f'                android:endColor="{BG_BOTTOM}" />\n'
+            f'                android:startColor="{pal["bg_top"]}"\n'
+            f'                android:endColor="{pal["bg_bottom"]}" />\n'
             '        </aapt:attr>\n    </path>')
 
 
-def write_vectors():
+def write_vectors(name):
+    pal = PALETTES[name]
     aapt = 'xmlns:aapt="http://schemas.android.com/aapt"\n    '
-    background = vector(gradient_path("M0,0h108v108h-108z")).replace("<vector ", "<vector " + aapt, 1)
-    (RES / "drawable/ic_launcher_background.xml").write_text(background)
-    (RES / "drawable/ic_launcher_foreground.xml").write_text(vector(dice_vector_groups()))
-    (RES / "drawable/ic_launcher_monochrome.xml").write_text(vector(dice_vector_groups(mono=True)))
+    background = vector(gradient_path(pal, "M0,0h108v108h-108z")).replace("<vector ", "<vector " + aapt, 1)
+    (RES / f"drawable/ic_launcher_background_{name}.xml").write_text(background)
+    (RES / f"drawable/ic_launcher_foreground_{name}.xml").write_text(vector(dice_vector_groups(pal)))
+    adaptive = RES / "mipmap-anydpi-v26"
+    adaptive.mkdir(exist_ok=True)
+    (adaptive / f"ic_launcher_{name}.xml").write_text(
+        '<?xml version="1.0" encoding="utf-8"?>\n'
+        '<!-- Generated by scripts/generate_icon.py; edit the script, not this file. -->\n'
+        '<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n'
+        f'    <background android:drawable="@drawable/ic_launcher_background_{name}" />\n'
+        f'    <foreground android:drawable="@drawable/ic_launcher_foreground_{name}" />\n'
+        '    <monochrome android:drawable="@drawable/ic_launcher_monochrome" />\n'
+        '</adaptive-icon>\n')
     # The logo crops the adaptive bleed (18dp each side) and rounds the corners.
-    logo_bg = gradient_path(rounded_rect_path(18, 18, 72, 72, 18))
-    logo = vector(logo_bg + "\n" + dice_vector_groups(), size_dp=72)
+    logo_bg = gradient_path(pal, rounded_rect_path(18, 18, 72, 72, 18))
+    logo = vector(logo_bg + "\n" + dice_vector_groups(pal), size_dp=72)
     logo = logo.replace('android:viewportWidth="108"\n    android:viewportHeight="108"',
                         'android:viewportWidth="72"\n    android:viewportHeight="72"')
     logo = logo.replace("<vector ", "<vector " + aapt, 1)
     logo = logo.replace("\n    <path android:pathData", "\n    <group\n        android:translateX=\"-18\"\n"
                         "        android:translateY=\"-18\">\n    <path android:pathData", 1)
     logo = logo.replace("\n</vector>", "\n    </group>\n</vector>")
-    (RES / "drawable/logo.xml").write_text(logo)
+    out = RES / LOGO_FOLDER[name]
+    out.mkdir(exist_ok=True)
+    (out / "logo.xml").write_text(logo)
 
 
-def render(px, shape):
-    """Render the full icon (background + dice) as a px*px RGBA image."""
+def write_monochrome():
+    # The system tints the monochrome layer itself, so one shape serves both themes.
+    mono = vector(dice_vector_groups(PALETTES["light"], mono=True))
+    (RES / "drawable/ic_launcher_monochrome.xml").write_text(mono)
+
+
+def render(pal, px):
+    """Render the legacy icon (background + dice, rounded square) as a px*px RGBA image."""
     ss = 4
     n = px * ss
     s = n / 108.0
     top = Image.new("RGBA", (n, n))
     g = ImageDraw.Draw(top)
-    c0, c1 = Image.new("RGB", (1, 1), BG_TOP).getpixel((0, 0)), Image.new("RGB", (1, 1), BG_BOTTOM).getpixel((0, 0))
+    c0, c1 = Image.new("RGB", (1, 1), pal["bg_top"]).getpixel((0, 0)), Image.new("RGB", (1, 1), pal["bg_bottom"]).getpixel((0, 0))
     for y in range(n):
         t = y / (n - 1)
         g.line([(0, y), (n, y)], fill=tuple(round(a + (b - a) * t) for a, b in zip(c0, c1)) + (255,))
-    for d in DICE:
+    for d in dice(pal):
         layer = Image.new("RGBA", (n, n))
         ld = ImageDraw.Draw(layer)
         half = d["size"] / 2
@@ -141,36 +181,30 @@ def render(px, shape):
         # PIL rotates counter-clockwise; Android/SVG rotation is clockwise.
         layer = layer.rotate(-d["rot"], resample=Image.BICUBIC, center=(d["cx"] * s, d["cy"] * s))
         top.alpha_composite(layer)
-    if shape == "full":
-        out = top
-    else:
-        # Legacy icons show the central 72/108 of the adaptive canvas.
-        inset = round(18 * s)
-        crop = top.crop((inset, inset, n - inset, n - inset))
-        m = crop.size[0]
-        mask = Image.new("L", (m, m), 0)
-        md = ImageDraw.Draw(mask)
-        if shape == "round":
-            md.ellipse([0, 0, m - 1, m - 1], fill=255)
-        else:
-            md.rounded_rectangle([0, 0, m - 1, m - 1], radius=m * 0.22, fill=255)
-        crop.putalpha(mask)
-        out = crop
+    # Legacy icons show the central 72/108 of the adaptive canvas, as a rounded square.
+    inset = round(18 * s)
+    out = top.crop((inset, inset, n - inset, n - inset))
+    m = out.size[0]
+    mask = Image.new("L", (m, m), 0)
+    ImageDraw.Draw(mask).rounded_rectangle([0, 0, m - 1, m - 1], radius=m * 0.22, fill=255)
+    out.putalpha(mask)
     return out.resize((px, px), Image.LANCZOS)
 
 
-def write_pngs():
+def write_pngs(name):
+    pal = PALETTES[name]
     densities = {"mdpi": 48, "hdpi": 72, "xhdpi": 96, "xxhdpi": 144, "xxxhdpi": 192}
-    for name, px in densities.items():
-        folder = RES / f"mipmap-{name}"
+    for density, px in densities.items():
+        folder = RES / f"mipmap-{density}"
         folder.mkdir(exist_ok=True)
-        render(px, "square").save(folder / "ic_launcher.png", optimize=True)
-        render(px, "round").save(folder / "ic_launcher_round.png", optimize=True)
+        render(pal, px).save(folder / f"ic_launcher_{name}.png", optimize=True)
     readme = ROOT / "docs/readme-assets"
     readme.mkdir(parents=True, exist_ok=True)
-    render(192, "square").save(readme / "icon.png", optimize=True)
+    render(pal, 192).save(readme / f"icon-{name}.png", optimize=True)
 
 
 if __name__ == "__main__":
-    write_vectors()
-    write_pngs()
+    for palette in PALETTES:
+        write_vectors(palette)
+        write_pngs(palette)
+    write_monochrome()

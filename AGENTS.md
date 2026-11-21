@@ -24,7 +24,7 @@ Guide for coding agents working in this repository. Read [DESIGN.md](DESIGN.md) 
 ./gradlew :app:lintDebug           # must report 0 errors
 adb install -r app/build/outputs/apk/debug/randomizer-debug.apk
 adb shell am start -n carl.coding/.StartMenu
-python3 scripts/generate_icon.py               # regenerate launcher icon, logo, README icon (needs Pillow)
+python3 scripts/generate_icon.py               # regenerate light/dark launcher icon, logo, README icons (needs Pillow)
 scripts/capture_readme_screenshots.sh          # regenerate README screenshots (needs booted emulator + ImageMagick)
 ```
 
