@@ -1,155 +1,120 @@
 package carl.coding;
 
-import static java.util.Arrays.sort;
-
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import java.util.List;
 import java.util.Random;
 
-
+/** Five dice; after a roll, tapping a die holds it so the next roll keeps its value. */
 public class YatzyActivity extends BaseActivity {
 
-    // Declare instance variables
-    Button yatzyRollButton;
-    Drawable yatzy1Drawable;
-    Drawable yatzy2Drawable;
-    Drawable yatzy3Drawable;
-    Drawable yatzy4Drawable;
-    Drawable yatzy5Drawable;
-    Drawable yatzy6Drawable;
-    ImageView yatzyImageView1;
-    ImageView yatzyImageView2;
-    ImageView yatzyImageView3;
-    ImageView yatzyImageView4;
-    ImageView yatzyImageView5;
-    ImageView[] imageViewArray;
-    boolean[] holdArray;
-    Random randomizer;
-    TextView yatzyRollResult;
+    private static final int DICE = 5;
+    private static final String STATE_VALUES = "values";
+    private static final String STATE_HELD = "held";
+    private static final String STATE_ROLLED = "rolled";
+
+    private final Random random = new Random();
+    private final ImageView[] dieImages = new ImageView[DICE];
+    private final TextView[] holdLabels = new TextView[DICE];
+    private int[] values = {1, 2, 3, 4, 5};
+    private boolean[] held = new boolean[DICE];
+    private boolean rolled;
+    private boolean rolling;
+    private Button rollButton;
+    private TextView resultText;
+    private TextView hintText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yatzy);
 
-        // Initiate randomizer
-        randomizer = new Random();
+        rollButton = findViewById(R.id.yatzyRollButton);
+        resultText = findViewById(R.id.yatzyRollResult);
+        hintText = findViewById(R.id.yatzyHint);
+        rollButton.setOnClickListener(v -> roll());
 
-        // Load dice images
-        yatzy1Drawable = ContextCompat.getDrawable(this, R.drawable.dice_1_512);
-        yatzy2Drawable = ContextCompat.getDrawable(this, R.drawable.dice_2_512);
-        yatzy3Drawable = ContextCompat.getDrawable(this, R.drawable.dice_3_512);
-        yatzy4Drawable = ContextCompat.getDrawable(this, R.drawable.dice_4_512);
-        yatzy5Drawable = ContextCompat.getDrawable(this, R.drawable.dice_5_512);
-        yatzy6Drawable = ContextCompat.getDrawable(this, R.drawable.dice_6_512);
+        if (savedInstanceState != null) {
+            values = savedInstanceState.getIntArray(STATE_VALUES);
+            held = savedInstanceState.getBooleanArray(STATE_HELD);
+            rolled = savedInstanceState.getBoolean(STATE_ROLLED);
+        }
 
-        // Get widget by ID
-        yatzyRollResult = findViewById(R.id.yatzyRollResult);
-        yatzyRollButton = findViewById(R.id.yatzyRollButton);
-
-        yatzyImageView1 = findViewById(R.id.yatzyImageView1);
-        yatzyImageView2 = findViewById(R.id.yatzyImageView2);
-        yatzyImageView3 = findViewById(R.id.yatzyImageView3);
-        yatzyImageView4 = findViewById(R.id.yatzyImageView4);
-        yatzyImageView5 = findViewById(R.id.yatzyImageView5);
-        imageViewArray = new ImageView[]{yatzyImageView1, yatzyImageView2, yatzyImageView3, yatzyImageView4, yatzyImageView5};
-
-        holdArray = new boolean[]{false, false, false, false, false};
-        //boolean yatzyImageView1.holdBool = new ;
-        yatzyImageView1.setClickable(true);
-        yatzyImageView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        yatzyImageView1.setImageDrawable(yatzy1Drawable);
-        yatzyImageView2.setImageDrawable(yatzy2Drawable);
-        yatzyImageView3.setImageDrawable(yatzy3Drawable);
-        yatzyImageView4.setImageDrawable(yatzy4Drawable);
-        yatzyImageView5.setImageDrawable(yatzy5Drawable);
+        LinearLayout row = findViewById(R.id.yatzyDiceRow);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (int i = 0; i < DICE; i++) {
+            View die = inflater.inflate(R.layout.item_yatzy_die, row, false);
+            dieImages[i] = die.findViewById(R.id.die_image);
+            holdLabels[i] = die.findViewById(R.id.die_hold_label);
+            int index = i;
+            die.setOnClickListener(v -> toggleHold(index));
+            row.addView(die);
+            showDie(i);
+        }
     }
 
-    public void yatzyRoll(View view) {
-        // Disable button during animation
-        yatzyRollButton.setEnabled(false);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntArray(STATE_VALUES, values);
+        outState.putBooleanArray(STATE_HELD, held);
+        outState.putBoolean(STATE_ROLLED, rolled);
+    }
 
-        // Vibrate to provide feedback to the user
+    private void roll() {
+        rolling = true;
+        rollButton.setEnabled(false);
+        resultText.setTextColor(ContextCompat.getColor(this, R.color.text_feedback_muted));
         vibrate(300);
 
-        int[] resultInt = {1, 2, 3, 4, 5}; // Variable to hold the rolling and previous value
-
-        // Roll through some results to create tension
-        for (int i = 0; i <= 6; i++) {
-
-            // Delay for each step
-            int delay = i*70 + (i+10)*(i+10);
-
-            // Schedule all steps with specified delays
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    for(int j=0; j<5; j++) {
-                        // Reduce scale to show rolling
-                        imageViewArray[j].setScaleX((float) 0.7);
-                        imageViewArray[j].setScaleY((float) 0.7);
-                        // Roll a new random value
-                        resultInt[j] = randomizer.nextInt(6) + 1;
-                        // Update image based on resulting random int
-                        resultToImage(imageViewArray[j], resultInt[j]);
+        for (int step = 0; step <= Dice.ROLL_STEPS; step++) {
+            handler.postDelayed(() -> {
+                for (int i = 0; i < DICE; i++) {
+                    if (!held[i]) {
+                        values[i] = random.nextInt(6) + 1;
+                        dieImages[i].setScaleX(0.8f);
+                        dieImages[i].setScaleY(0.8f);
+                        showDie(i);
                     }
                 }
-            }, delay);
+            }, Dice.rollStepDelay(step));
         }
 
-        // Delay the final update to display the resulting value
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                sort(resultInt);
-                int sum = 0;
-                for(int k=0; k<5; k++) {
-                    // Enlarge to signal animation end
-                    imageViewArray[k].setScaleX((float) 0.8);
-                    imageViewArray[k].setScaleY((float) 0.8);
-                    // Add to sum
-                    sum += resultInt[k];
-                    // Update image based on resulting random int
-                    resultToImage(imageViewArray[k], resultInt[k]);
-                }
-                // Generate string and update TextView
-                String sumText = "Sum: " + String.valueOf(sum);
-                yatzyRollResult.setText(sumText);
-
-                // Reactivate Button
-                yatzyRollButton.setEnabled(true);
+        handler.postDelayed(() -> {
+            int sum = 0;
+            for (int i = 0; i < DICE; i++) {
+                dieImages[i].setScaleX(1f);
+                dieImages[i].setScaleY(1f);
+                sum += values[i];
             }
-        }, 6*70 + (6+10)*(6+10)); // Delay to wait for the animation to complete, same as above
+            resultText.setText("Sum: " + sum);
+            resultText.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
+            hintText.setText("Tap dice to hold or release them.");
+            rolled = true;
+            rolling = false;
+            rollButton.setEnabled(true);
+        }, Dice.rollStepDelay(Dice.ROLL_STEPS));
     }
 
-    private void resultToImage(ImageView imageView, int rollResult) {
-
-        if (rollResult == 1) {
-            imageView.setImageDrawable(yatzy1Drawable);
-        } else if (rollResult == 2) {
-            imageView.setImageDrawable(yatzy2Drawable);
-        } else if (rollResult == 3) {
-            imageView.setImageDrawable(yatzy3Drawable);
-        } else if (rollResult == 4) {
-            imageView.setImageDrawable(yatzy4Drawable);
-        } else if (rollResult == 5) {
-            imageView.setImageDrawable(yatzy5Drawable);
-        } else if (rollResult == 6) {
-            imageView.setImageDrawable(yatzy6Drawable);
+    private void toggleHold(int index) {
+        if (!rolled || rolling) {
+            return;
         }
+        held[index] = !held[index];
+        showDie(index);
+    }
+
+    private void showDie(int index) {
+        dieImages[index].setImageResource(Dice.face(values[index]));
+        dieImages[index].setSelected(held[index]);
+        holdLabels[index].setVisibility(held[index] ? View.VISIBLE : View.INVISIBLE);
+        dieImages[index].setContentDescription(values[index] + (held[index] ? ", held" : ""));
     }
 }

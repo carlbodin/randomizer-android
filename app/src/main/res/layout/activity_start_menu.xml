@@ -98,6 +98,30 @@
                     android:textSize="18sp" />
 
                 <Button
+                    android:id="@+id/yatzyButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/button_selector"
+                    android:onClick="goYatzy"
+                    android:text="Yatzy dice"
+                    android:textAllCaps="false"
+                    android:textColor="@color/button_text"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/yesNoButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/button_selector"
+                    android:onClick="goYesNo"
+                    android:text="Yes or no"
+                    android:textAllCaps="false"
+                    android:textColor="@color/button_text"
+                    android:textSize="18sp" />
+
+                <Button
                     android:id="@+id/categoriesButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"

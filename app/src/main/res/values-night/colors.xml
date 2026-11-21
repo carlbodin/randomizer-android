@@ -10,4 +10,5 @@
     <color name="accent_pressed">#88AAFF</color>
     <color name="accent_disabled">#42537A</color>
     <color name="button_text">#FFFFFFFF</color>
+    <color name="hold_highlight">#336E97FF</color>
 </resources>

@@ -30,6 +30,14 @@ public class StartMenu extends BaseActivity {
         open(DiceActivity.class);
     }
 
+    public void goYatzy(View view) {
+        open(YatzyActivity.class);
+    }
+
+    public void goYesNo(View view) {
+        open(YesNoActivity.class);
+    }
+
     public void goCategories(View view) {
         open(CategoriesSetupActivity.class);
     }
