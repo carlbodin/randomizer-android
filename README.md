@@ -32,7 +32,3 @@ Requires JDK 17 or newer and the Android SDK (platform 36).
 ```
 
 Every push to `main` builds the debug APK and updates the release above.
-
-## License
-
-Public domain, see [LICENSE](LICENSE).
