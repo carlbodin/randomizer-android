@@ -13,6 +13,7 @@ import java.util.Random;
 public class DiceActivity extends BaseActivity {
 
     private static final int ROLL_STEPS = 6;
+    private static final String STATE_ROLL = "roll";
 
     private final Random random = new Random();
     private Button rollButton;
@@ -28,6 +29,17 @@ public class DiceActivity extends BaseActivity {
         rollResult = findViewById(R.id.rollResult);
         rollButton = findViewById(R.id.rollButton);
         diceImageView = findViewById(R.id.diceImageView);
+
+        if (savedInstanceState != null) {
+            currentRoll = savedInstanceState.getInt(STATE_ROLL, 1);
+            showRoll();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_ROLL, currentRoll);
     }
 
     public void roll(View view) {

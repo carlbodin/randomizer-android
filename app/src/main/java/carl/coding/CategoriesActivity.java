@@ -14,18 +14,18 @@ public class CategoriesActivity extends BaseActivity {
 
     static final String EXTRA_ELEMENTS = "elements";
     static final String EXTRA_WITHDRAW_MODE = "withdrawMode";
+    private static final String STATE_POOL = "pool";
 
-    private static final float RESULT_TEXT_SIZE_SP = 38f;
+    private static final int ROLL_STEPS = 8;
+    private static final int ROLL_STEP_MS = 100;
 
+    private final Random random = new Random();
     private ArrayList<String> originalList;
     private ArrayList<String> activeList;
+    private boolean withdrawMode;
     private TextView resultText;
     private TextView poolStatusText;
     private Button pickButton;
-    private Button resetButton;
-    private final Random random = new Random();
-    private Runnable rollingRunnable;
-    private boolean withdrawMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,82 +36,59 @@ public class CategoriesActivity extends BaseActivity {
         if (originalList == null) {
             originalList = new ArrayList<>();
         }
-        activeList = new ArrayList<>(originalList);
         withdrawMode = getIntent().getBooleanExtra(EXTRA_WITHDRAW_MODE, false);
+        ArrayList<String> savedPool = savedInstanceState == null
+                ? null : savedInstanceState.getStringArrayList(STATE_POOL);
+        activeList = savedPool != null ? savedPool : new ArrayList<>(originalList);
 
         resultText = findViewById(R.id.result_text);
         poolStatusText = findViewById(R.id.pool_status_text);
         pickButton = findViewById(R.id.pick_button);
-        resetButton = findViewById(R.id.reset_button);
+        Button resetButton = findViewById(R.id.reset_button);
 
-        pickButton.setOnClickListener(v -> pickNextElement());
+        pickButton.setOnClickListener(v -> pick());
         resetButton.setOnClickListener(v -> resetPool());
-
         resetButton.setVisibility(withdrawMode ? View.VISIBLE : View.GONE);
+        pickButton.setEnabled(!activeList.isEmpty());
         updatePoolStatus();
     }
 
-    private void pickNextElement() {
-        if (activeList.isEmpty()) {
-            resultText.setText("Pool empty");
-            updatePoolStatus();
-            pickButton.setEnabled(false);
-            return;
-        }
-
-        pickButton.setEnabled(false);
-        rollingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                int randomIndex = random.nextInt(activeList.size());
-                String randomElement = activeList.get(randomIndex);
-                resultText.setText(randomElement);
-                resultText.setTextColor(ContextCompat.getColor(CategoriesActivity.this, R.color.text_primary));
-                resultText.setTextSize(RESULT_TEXT_SIZE_SP);
-                if (withdrawMode) {
-                    activeList.remove(randomIndex);
-                }
-                updatePoolStatus();
-                pickButton.setEnabled(!activeList.isEmpty());
-            }
-        };
-
-        vibrate(250);
-        rollThroughElements();
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList(STATE_POOL, activeList);
     }
 
-    private void rollThroughElements() {
-        int duration = 800;
-        int interval = 100;
-        int iterations = duration / interval;
-        resultText.setTextSize(RESULT_TEXT_SIZE_SP);
+    private void pick() {
+        if (activeList.isEmpty()) {
+            return;
+        }
+        pickButton.setEnabled(false);
         resultText.setTextColor(ContextCompat.getColor(this, R.color.text_feedback_muted));
+        vibrate(250);
 
-        handler.postDelayed(new Runnable() {
-            int iteration = 0;
-            int currentIndex = 0;
+        // Cycle through the pool to build suspense, then land on a random pick.
+        for (int step = 0; step < ROLL_STEPS; step++) {
+            String shown = activeList.get(step % activeList.size());
+            handler.postDelayed(() -> resultText.setText(shown), (long) step * ROLL_STEP_MS);
+        }
+        handler.postDelayed(this::finishPick, (long) ROLL_STEPS * ROLL_STEP_MS);
+    }
 
-            @Override
-            public void run() {
-                if (activeList.isEmpty()) {
-                    handler.post(rollingRunnable);
-                    return;
-                }
-                if (iteration < iterations) {
-                    resultText.setText(activeList.get(currentIndex % activeList.size()));
-                    currentIndex++;
-                    iteration++;
-                    handler.postDelayed(this, interval);
-                } else {
-                    handler.post(rollingRunnable);
-                }
-            }
-        }, interval);
+    private void finishPick() {
+        int index = random.nextInt(activeList.size());
+        resultText.setText(activeList.get(index));
+        resultText.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
+        if (withdrawMode) {
+            activeList.remove(index);
+        }
+        pickButton.setEnabled(!activeList.isEmpty());
+        updatePoolStatus();
     }
 
     private void resetPool() {
-        activeList.clear();
-        activeList.addAll(originalList);
+        handler.removeCallbacksAndMessages(null);
+        activeList = new ArrayList<>(originalList);
         resultText.setText("Ready");
         resultText.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
         pickButton.setEnabled(!activeList.isEmpty());
@@ -119,14 +96,12 @@ public class CategoriesActivity extends BaseActivity {
     }
 
     private void updatePoolStatus() {
-        if (withdrawMode) {
-            if (activeList.isEmpty()) {
-                poolStatusText.setText("Withdraw mode on, all categories have been used.");
-            } else {
-                poolStatusText.setText("Withdraw mode on, " + activeList.size() + " left in the pool.");
-            }
-        } else {
+        if (!withdrawMode) {
             poolStatusText.setText("Standard mode, picks stay in the pool.");
+        } else if (activeList.isEmpty()) {
+            poolStatusText.setText("Withdraw mode on, all categories have been used.");
+        } else {
+            poolStatusText.setText("Withdraw mode on, " + activeList.size() + " left in the pool.");
         }
     }
 }

@@ -13,6 +13,7 @@ public class CoinActivity extends BaseActivity {
 
     private static final int FLIP_DURATION_MS = 500;
     private static final int LAND_DURATION_MS = 200;
+    private static final String STATE_HEADS = "heads";
 
     private final Random random = new Random();
     private Button flipButton;
@@ -20,6 +21,7 @@ public class CoinActivity extends BaseActivity {
     private TextView coinFlipResult;
     private ObjectAnimator flipAnimator;
     private ObjectAnimator landAnimator;
+    private boolean heads = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,21 @@ public class CoinActivity extends BaseActivity {
                 .setDuration(FLIP_DURATION_MS);
         landAnimator = ObjectAnimator.ofFloat(coinImageView, "rotationY", -90f, 0f)
                 .setDuration(LAND_DURATION_MS);
+
+        if (savedInstanceState != null) {
+            heads = savedInstanceState.getBoolean(STATE_HEADS, true);
+            showFace();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_HEADS, heads);
+    }
+
+    private void showFace() {
+        coinImageView.setImageResource(heads ? R.drawable.coin_heads_transparent : R.drawable.coin_tails_transparent);
     }
 
     public void flip(View view) {
@@ -41,10 +58,10 @@ public class CoinActivity extends BaseActivity {
         coinFlipResult.setText(" ");
         vibrate(300);
 
-        boolean heads = random.nextBoolean();
+        heads = random.nextBoolean();
         flipAnimator.start();
         handler.postDelayed(() -> {
-            coinImageView.setImageResource(heads ? R.drawable.coin_heads_transparent : R.drawable.coin_tails_transparent);
+            showFace();
             coinFlipResult.setText(heads ? "HEADS" : "TAILS");
             landAnimator.start();
             flipButton.setEnabled(true);

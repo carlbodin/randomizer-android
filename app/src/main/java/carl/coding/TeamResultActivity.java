@@ -29,7 +29,9 @@ public class TeamResultActivity extends BaseActivity {
         Button rerollButton = findViewById(R.id.reroll_teams_button);
 
         rerollButton.setOnClickListener(v -> renderTeams());
-        renderTeams();
+        if (savedInstanceState == null) {
+            renderTeams();
+        }
     }
 
     private void renderTeams() {
